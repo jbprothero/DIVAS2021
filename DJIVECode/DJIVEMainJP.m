@@ -64,7 +64,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     colCent = 0;
     rowCent = 0;
     figdir = '';
-    filterPerc = 0.5;
+    filterPerc = 1 - (2/(1+sqrt(5))) ; % "Golden Ratio"
     
     if exist('paramstruct', 'var')
         if isfield(paramstruct, 'dataname')
@@ -116,8 +116,6 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
             rowSpaces{ib} = orth(truth{ib}');
         end
     end
-    
-    goldenRatio = 1 - (2/(1+sqrt(5))) ;
     
     % Step 1: Estimate signal space and perturbation angle
     [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, rSteps, VVHatCacheBars, UUHatCacheBars] = ...

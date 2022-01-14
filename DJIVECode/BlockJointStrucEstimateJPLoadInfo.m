@@ -153,12 +153,14 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPLoadInfo(blockIn, dat
         fprintf('Direction %d converges.\n', j)
         Vi = [Vi, opt_v];
         curRanks = curRanks + blockIn';
+        %{
         if any(curRanks + blockIn' > rBars)
             fprintf('There is no room for searching next direction. Stop seraching current joint block.\n')
             searchNext = false;
         else
             fprintf('There is room for searching next direction. Continue...\n')
         end
+        %}
     end
     
     angles = angles(:,1:(size(Vi,2)+1*~any(curRanks + blockIn' > rBars)));
