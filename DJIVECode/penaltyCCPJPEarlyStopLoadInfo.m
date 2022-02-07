@@ -51,10 +51,11 @@ function output = penaltyCCPJPEarlyStopLoadInfo(v0, Qo1, Qo2, Qc1, Qc2, Qc1Load,
             disp(['Iteration ' num2str(t)])
         end
         result = ccpSubOptJPLoadInfo(cache_v{t-1}, Qo1, Qo2, Qc1, Qc2, Qc1Load, Qc2Load, Vorth, tau);
-        [cache_v{t}, cache_slack{t}, cache_cvx_objval(t)] = result{:};
-        if any(isnan(cache_v{t}))
-            disp(['NaN solution appears in iteration' num2str(t)])
+        [cache_v{t}, cache_slack{t}, cache_cvx_objval(t), cvx_status] = result{:};
+        if cvx_status ~= "Solved"
+            disp(['Iteration' num2str(t) 'intractable.'])
             t = t-1;
+            converge = 2;
             break
         end
         cache_v{t} = cache_v{t}/norm(cache_v{t});

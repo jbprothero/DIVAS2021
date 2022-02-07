@@ -56,6 +56,6 @@ function result = ccpSubOptJPLoadInfo(v0, Qo1, Qo2, Qc1, Qc2, Qc1Load, Qc2Load, 
             Vo' * v == zeros(ro, 1);            
     cvx_end
     cvx_objval = v'*Qo1*v - 2*v0'*Qo2*v + v0'*Qo2*v0;
-    result = {v, slack, cvx_objval};
+    result = {v, slack, cvx_optval, cvx_status};
 end
 

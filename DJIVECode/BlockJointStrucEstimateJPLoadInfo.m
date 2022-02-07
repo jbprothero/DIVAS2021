@@ -138,15 +138,17 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPLoadInfo(blockIn, dat
         Vorth = [Vorth, Vi];
         output = penaltyCCPJPEarlyStopLoadInfo(V0(:,j), Qo1, Qo2, Qc1, Qc2, Qc1Load, Qc2Load, Vorth, optArgin);
         [opt_v, cache_v, ~, ~, converge] = output{:};
-        angleHats = ccpOutAnalysisMJ(cache_v, VBars);
-        %angleTrues = ccpOutAnalysisMJ(cache_v, rowSpaces);
-        figname = strjoin({strjoin(blockName, '-'), '-joint-optV', ...
-            num2str(j)}, '');
-        ccpOutVisualMJ(angleHats, phiBars, dataname, iprint, figdir, figname);%, angleTrues);
-        for ib = 1:nb
-            angles(ib,j) = angleHats{ib}(end);
+        if converge<=1
+            angleHats = ccpOutAnalysisMJ(cache_v, VBars);
+            %angleTrues = ccpOutAnalysisMJ(cache_v, rowSpaces);
+            figname = strjoin({strjoin(blockName, '-'), '-joint-optV', ...
+                num2str(j)}, '');
+            ccpOutVisualMJ(angleHats, phiBars, dataname, iprint, figdir, figname);%, angleTrues);
+            for ib = 1:nb
+                angles(ib,j) = angleHats{ib}(end);
+            end
         end
-        if ~converge
+        if converge~=1
             fprintf('Direction %d does not converge. Stop searching current joint block.\n', j)
             break;
         end
