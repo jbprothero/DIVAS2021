@@ -134,6 +134,12 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPLoadInfo(blockIn, dat
     j = 0;
     while searchNext
         j = j + 1;
+        if j > max(rBars(blockIn))
+            break
+            % THIS IS A HACKY FIX TO PREVENT A CRASH POSSIBILITY WHILE
+            % ALLOWIING FOR DOUBLING UP BLOCK ENERGY FOR DIFFERENT BLOCK
+            % COLLECTIONS. CONSIDER DOING SOMETHING SMARTER LONG-TERM
+        end
         fprintf('Search Direction %d:\n', j)
         Vorth = [Vorth, Vi];
         output = penaltyCCPJPEarlyStopLoadInfo(V0(:,j), Qo1, Qo2, Qc1, Qc2, Qc1Load, Qc2Load, Vorth, optArgin);
