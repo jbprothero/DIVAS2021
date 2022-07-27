@@ -138,6 +138,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     outstruct.UBars = UBars ;
     outstruct.VVHatCacheBars = VVHatCacheBars ;
     outstruct.UUHatCacheBars = UUHatCacheBars ;
+    outstruct.jointBasisMapRaw = outMap ;
     
     %{
     save SigExt.mat VBars UBars phiBars psiBars EHats rBars singVals singValsHat rSteps

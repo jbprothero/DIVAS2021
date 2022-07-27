@@ -25,6 +25,24 @@ function outstruct = DJIVEReconstructMJ(datablock, dataname, outMap, ...
         matJointOrder{ib} = {};
         matJointRanks{ib} = [];
     end
+
+    % re-rotate joint bases for interpretation
+    %
+    commonNormalizedBasisMap = containers.Map() ;
+    for idx = 1:(2^nb-1)
+        idxStr = num2str(idx) ;
+        if isKey(outMap, idxStr)
+            blockIn = keyIdxMap(idxStr) ;
+            jointSpace = outMap(idxStr) ;
+            jointSpaceProj = jointSpace * jointSpace' ;
+            jointDim = size(jointSpace, 2) ;
+            dataStack = vertcat(datablock{blockIn}) ;
+            [~,~,commonNormalizedBasisMap(idxStr)] = svds(dataStack * jointSpaceProj, jointDim) ;
+        end
+    end
+    outMapRaw = outMap ;
+    outMap = commonNormalizedBasisMap ;
+    %}
     
     % collect joint block basis for each data matrix
     for i = 1:length(jointBlockOrder)
