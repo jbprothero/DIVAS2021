@@ -280,9 +280,10 @@ for k = 1:(2^nb-1)
                 omegaHat = VBars{ib}' * jointVec;
                 omegaHatLoad = UBars{ib}' * loadVec;
                 
+                % min/max to keep in domain
                 for r = 1:rs
-                    midpoints(ib, r) = acosd(svds(omegaHat(:,r), 1)) ;
-                    midpointsLoad(ib, r) = acosd(svds(omegaHatLoad(:,r), 1)) ;
+                    midpoints(ib, r) = acosd(min(1,max(-1,svds(omegaHat(:,r), 1)))) ;
+                    midpointsLoad(ib, r) = acosd(min(1,max(-1,svds(omegaHatLoad(:,r), 1)))) ;
                 end
                 
                 thetaTwoStarsBoot = zeros(nsim,rs);
