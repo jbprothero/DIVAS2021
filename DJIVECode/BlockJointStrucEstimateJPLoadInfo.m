@@ -127,10 +127,14 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPLoadInfo(blockIn, dat
     % starting optimization
     searchNext = true;
     
-    if blockLen == 1
-        proj = orth(Vorth);
-        %left multiplication as projecting in column space
-        [~,~,V0] = svds((datablock{blockIn}*(eye(size(Vorth,1))-proj*proj')), max(rBars(blockIn)));
+    if (blockLen == 1)
+        if (isempty(Vorth))
+            [~,~,V0] = svds(datablock{blockIn}, max(rBars(blockIn)));
+        else
+            proj = orth(Vorth);
+            %left multiplication as projecting in column space
+            [~,~,V0] = svds((datablock{blockIn}*(eye(size(Vorth,1))-proj*proj')), max(rBars(blockIn)));
+        end
     else
         [~,~,V0] = svds(Qo2 , max(rBars(blockIn)));
     end
