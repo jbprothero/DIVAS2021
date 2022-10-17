@@ -51,6 +51,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
 %
 %   Copyright (c)  Meilei Jiang 2018, Jack Prothero 2020
 
+    print('DIVAS Version 10-17-22 `No More curRanks!`')
     % Initialize parameters
     nb = length(datablock); 
     dataname = cell(nb, 1);

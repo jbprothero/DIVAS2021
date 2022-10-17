@@ -1,5 +1,5 @@
-function [Vi, curRanks, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn, datablock, dataname, ...
-    VBars, UBars, phiBars, psiBars, rBars, curRanks, outMap, theta0, optArgin, iprint, ...
+function [Vi, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn, datablock, dataname, ...
+    VBars, UBars, phiBars, psiBars, rBars, outMap, theta0, optArgin, iprint, ...
     figdir)
 % BlockJointStrucEstimateMJ   Estimate a specific joint block basis
 %   Detailed explanation goes here
@@ -196,7 +196,7 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn,
         end
         fprintf('Direction %d converges.\n', j)
         Vi = [Vi, opt_v];
-        curRanks = curRanks + blockIn';
+        % curRanks = curRanks + blockIn';
         %{
         if any(curRanks + blockIn' > rBars)
             fprintf('There is no room for searching next direction. Stop seraching current joint block.\n')
@@ -207,7 +207,7 @@ function [Vi, curRanks, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn,
         %}
     end
     
-    angles = angles(:,1:(size(Vi,2)+1*~any(curRanks + blockIn' > rBars)));
+    angles = angles(:,1:(size(Vi,2)));
     
 end
 

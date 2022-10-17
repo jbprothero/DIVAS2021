@@ -37,7 +37,7 @@ function [outMap, keyIdxMap, anglesMap, jointBlockOrder] = DJIVEJointStrucEstima
 
     nb = length(VBars);
     allIdx = 1:1:nb;
-    curRanks = zeros(nb, 1);
+    %curRanks = zeros(nb, 1);
     outMap = containers.Map();
     keyIdxMap = containers.Map();
     anglesMap = containers.Map();
@@ -50,11 +50,13 @@ function [outMap, keyIdxMap, anglesMap, jointBlockOrder] = DJIVEJointStrucEstima
         for i = 1:nlen
             blockIdx = lenIdces(i, :);
             blockIn = ismember(allIdx, blockIdx);
+            %{
             if any(curRanks + blockIn' > rBars)
                 continue;
             end
-            [Vi, curRanks, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn, datablock, dataname, ...
-                VBars, UBars, phiBars, psiBars, rBars, curRanks, outMap, theta0, optArgin, ...
+            %}
+            [Vi, angles] = BlockJointStrucEstimateJPSignalReduce(blockIn, datablock, dataname, ...
+                VBars, UBars, phiBars, psiBars, rBars, outMap, theta0, optArgin, ...
                 iprint, figdir);
             if size(Vi, 2) > 0
                 t = Idx2numMJ(blockIn);
@@ -63,11 +65,13 @@ function [outMap, keyIdxMap, anglesMap, jointBlockOrder] = DJIVEJointStrucEstima
                 anglesMap(num2str(t)) = angles;
                 jointBlockOrder{end + 1} = num2str(t);
             end
+            %{
             if curRanks == rBars
                 fprintf('There is no room for next joint block. Stop seraching.\n')
                 flag = true;
                 break
             end
+            %}
         end
         
         if flag
