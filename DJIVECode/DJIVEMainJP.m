@@ -120,7 +120,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     
     % Step 1: Estimate signal space and perturbation angle
     [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, rSteps, VVHatCacheBars, UUHatCacheBars] = ...
-        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, 1, 1, filterPerc);
+        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, colCent, rowCent, filterPerc);
     
     delete(gcp('nocreate'))
     
