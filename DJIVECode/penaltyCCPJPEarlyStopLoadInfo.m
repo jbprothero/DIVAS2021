@@ -53,10 +53,20 @@ function output = penaltyCCPJPEarlyStopLoadInfo(v0, Qo1, Qo2, Qc1, Qc2, Qc1Load,
         result = ccpSubOptJPLoadInfo(cache_v{t-1}, Qo1, Qo2, Qc1, Qc2, Qc1Load, Qc2Load, Vorth, tau);
         [cache_v{t}, cache_slack{t}, cache_cvx_objval(t), cvx_status] = result{:};
         if cvx_status ~= "Solved"
-            disp(['Iteration' num2str(t) 'intractable.'])
-            t = t-1;
-            converge = 2;
-            break
+            disp(['Iteration ' num2str(t) ' Status: ' cvx_status])
+            loadslackscale = ones(1,length(Qc1Load));
+            for ipre = 1:length(Qc1Load)
+                if sum(sum(Qc1Load{ipre} ~= 0))
+                    loadslackscale(ipre) = svds(Qc1Load{ipre},1) ;
+                end
+            end
+            disp(loadslackscale)
+            if ~contains(cvx_status, "Inaccurate")
+                fprintf(updatePrintFormat, t, cache_slack{t}, cache_cvx_objval(t))
+                t = t-1 ;
+                converge = 2;
+                break
+            end
         end
         cache_v{t} = cache_v{t}/norm(cache_v{t});
         curr_objval = cache_cvx_objval(t) + tau * sum(cache_slack{t});

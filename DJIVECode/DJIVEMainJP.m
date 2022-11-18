@@ -51,6 +51,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
 %
 %   Copyright (c)  Meilei Jiang 2018, Jack Prothero 2020
 
+    disp('DIVAS Version 11-18-22 `Submission!`')
     % Initialize parameters
     nb = length(datablock); 
     dataname = cell(nb, 1);
@@ -119,7 +120,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     
     % Step 1: Estimate signal space and perturbation angle
     [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, rSteps, VVHatCacheBars, UUHatCacheBars] = ...
-        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, 1, 1, filterPerc);
+        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, colCent, rowCent, filterPerc);
     
     delete(gcp('nocreate'))
     
