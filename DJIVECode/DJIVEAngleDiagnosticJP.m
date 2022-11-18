@@ -29,6 +29,9 @@ nb = length(datablock);
 ds = zeros(1,nb) ;
 randAngleTraits = 90*ones(1,nb) ;
 randAngleObjects = 90*ones(1,nb) ;
+rankGothV = zeros(1,nb) ;
+rankGothL = zeros(1,nb) ;
+rankMax = zeros(1,nb) ;
 for ib = 1:nb
     trueObjKeys = keys(outstruct.matLoadings{ib}) ;
     [ds(ib),~] = size(outstruct.matLoadings{ib}(trueObjKeys{1})) ;
@@ -36,6 +39,16 @@ for ib = 1:nb
     randAngleCacheLoad = randDirAngleMJ(ds(ib), rBars(ib), 1000);
     randAngleTraits(ib) = quantile(randAngleCache, 0.05);
     randAngleObjects(ib) = quantile(randAngleCacheLoad, 0.05);
+
+    gothVi = values(outstruct.jointBasisMap, keys(outstruct.matLoadings{ib})) ;
+    gothLi = values(outstruct.matLoadings{ib}) ;
+    gothV = cat(2, gothVi{:}) ;
+    gothL = cat(2, gothLi{:}) ;
+
+    rankGothV(ib) = rank(gothV) ;
+    rankGothL(ib) = rank(gothL) ;
+
+    rankMax(ib) = min(n, ds(ib)) ;
 end
 
 
@@ -149,7 +162,7 @@ for b = 1:nb
     xticklabs(nb-b+1) = cellstr([num2str(b) '-Way']);
     %rHats(b) = sum(singValsHat{b}>0) ;
 end
-xticklabs(nb+1) = cellstr('Totals');
+xticklabs(nb+1) = cellstr('Ranks');
 
 % Plot!
 %
@@ -362,7 +375,11 @@ for b = 1:nb
     for bb = 1:nb
         plot([textInds(xSum+1)-0.5 textInds(xSum+ncrs(b))+0.5], [bb-0.5 bb-0.5], 'k-')
     end
-    text(2^nb+nb,b-0.4,{num2str(rBars(b))}, ...
+    text(2^nb+nb,b-0.4,[num2str(rankGothV(b))], ...
+        'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
+    text(2^nb+nb,b-0.1,[num2str(rBars(b))], ...
+        'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
+    text(2^nb+nb,b+0.2,[num2str(rankMax(b))], ...
         'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
     xSum = xSum+ncrs(b);
     plot([2^nb+nb-0.5 n^nb+nb+0.5], [b-0.5 b-0.5], 'k-')
@@ -507,7 +524,11 @@ for b = 1:nb
     for bb = 1:nb
         plot([textInds(xSum+1)-0.5 textInds(xSum+ncrs(b))+0.5], [bb-0.5 bb-0.5], 'k-')
     end
-    text(2^nb+nb,b-0.4,{num2str(rBars(b))}, ...
+    text(2^nb+nb,b-0.4,[num2str(rankGothL(b))], ...
+        'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
+    text(2^nb+nb,b-0.1,[num2str(rBars(b))], ...
+        'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
+    text(2^nb+nb,b+0.2,[num2str(rankMax(b))], ...
         'FontSize',fontsize/2, 'HorizontalAlignment','center', 'Color','black')
     xSum = xSum+ncrs(b);
     plot([2^nb+nb-0.5 n^nb+nb+0.5], [b-0.5 b-0.5], 'k-')
