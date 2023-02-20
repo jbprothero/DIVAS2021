@@ -35,4 +35,4 @@ Executes three subroutines:
   
 Diagnostic function: DJIVEAngleDiagnosticJP(), takes in the datablocks and block names as cell arrays, the output from DJIVEMainJP(), an argument for random seed initialization, and a string for titling resulting figures. Creates three diagnostic images for angles between joint structure and estimated signal spaces. This function will attempt to initialize a parallel pool.
 
-I've also included a folder with the input data for a demo along with the output of DJIVEMainJP() on my machine for comparison.
+Please see the Google Drive folder linked below the input data for the demo script along with the output of DJIVEMainJP() on my machine for comparison: https://drive.google.com/drive/folders/1ToBIzVTfR2Hm53lCVneR0iGGTINR9r1w?usp=share_link
