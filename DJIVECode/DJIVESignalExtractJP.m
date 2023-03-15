@@ -1,5 +1,5 @@
 function [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, rSteps, VVHatCacheBars, UUHatCacheBars]= DJIVESignalExtractJP(datablock, ...
-    dataname, nsim, iplot, colCent, rowCent, cull, noiselvls)
+    dataname, nsim, iplot, colCent, rowCent, cull, noisepercentile, noiselvls)
 % DJIVESignalExtractMJ  Singmal matrix extraction
 %      First Step of DJIVE algorithm
 %
@@ -27,16 +27,18 @@ function [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, r
     rSteps = cell(nb, 1);
     VVHatCacheBars = cell(nb, 1);
     UUHatCacheBars = cell(nb, 1);
+
     for ib = 1:nb
         fprintf('Signal estimation for %s\n', dataname{ib});
         datablockc = datablock{ib} ;
         d = size(datablockc, 1) ;
         n = size(datablockc, 2) ;
+        percentile = noisepercentile(ib);
      
     
         if ~exist('noiselvls', 'var')
             [VBars{ib}, UBars{ib}, phiBars(ib), psiBars(ib), rBars(ib), EHats{ib}, singVals{ib}, singValsHat{ib}, rSteps{ib}, VVHatCacheBars{ib}, UUHatCacheBars{ib}] = ...
-                MatSignalExtractJP(datablockc, dataname{ib}, nsim, colCent, rowCent, cull);
+                MatSignalExtractJP(datablockc, dataname{ib}, nsim, colCent, rowCent, cull, percentile);
         else
             [VBars{ib}, UBars{ib}, phiBars(ib), psiBars(ib), rBars(ib), EHats{ib}, singVals{ib}, singValsHat{ib}, rSteps{ib}, VVHatCacheBars{ib}, UUHatCacheBars{ib}] = ...
                 MatSignalExtractJP(datablockc, dataname{ib}, nsim, colCent, rowCent, cull, noiselvls{ib});
