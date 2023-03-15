@@ -105,13 +105,11 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
         if isfield(paramstruct, 'filterPerc')
             filterPerc = paramstruct.filterPerc;
         end
-
         if isfield(paramstruct, 'noisepercentile')
             %vector with percentile of empiracle singular value to be
             %used in noise estimation specific to each block
             noisepercentile = paramstruct.noisepercentile;
         end
-
     end
     
     rowSpaces = cell(nb, 1);
