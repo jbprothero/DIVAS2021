@@ -66,6 +66,8 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     rowCent = 0;
     figdir = '';
     filterPerc = 1 - (2/(1+sqrt(5))) ; % "Golden Ratio"
+    %set a default
+    noisepercentile = repmat(0.5, [1,nb]);
     
     if exist('paramstruct', 'var')
         if isfield(paramstruct, 'dataname')
@@ -103,6 +105,13 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
         if isfield(paramstruct, 'filterPerc')
             filterPerc = paramstruct.filterPerc;
         end
+
+        if isfield(paramstruct, 'noisepercentile')
+            %vector with percentile of empiracle singular value to be
+            %used in noise estimation specific to each block
+            noisepercentile = paramstruct.noisepercentile;
+        end
+
     end
     
     rowSpaces = cell(nb, 1);
@@ -120,7 +129,7 @@ function outstruct = DJIVEMainJP(datablock, paramstruct, truth)
     
     % Step 1: Estimate signal space and perturbation angle
     [VBars, UBars, phiBars, psiBars, EHats, rBars, singVals, singValsHat, rSteps, VVHatCacheBars, UUHatCacheBars] = ...
-        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, colCent, rowCent, filterPerc);
+        DJIVESignalExtractJP(datablockc, dataname, nsim, 0, colCent, rowCent, filterPerc, noisepercentile);
     
     delete(gcp('nocreate'))
     
