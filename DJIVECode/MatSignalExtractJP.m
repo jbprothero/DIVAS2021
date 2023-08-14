@@ -1,4 +1,4 @@
-function [VBar, UBar, phiBar, psiBar, rBar, EHat, singVals, singValsHat, rSteps, VVHatCacheBar, UUHatCacheBar] = MatSignalExtractJP(X, matName, nsim, colCent, rowCent, cull, noiselvl)
+function [VBar, UBar, phiBar, psiBar, rBar, EHat, singVals, singValsHat, rSteps, VVHatCacheBar, UUHatCacheBar] = MatSignalExtractJP(X, matName, nsim, colCent, rowCent, cull, percentile, noiselvl)
 % MatSignalExtractMJ   Matrix signal extraction
 %   Estimate signal rank, signal row space, corresponding perturbation
 %   angle and noise matrix. Adjust signals based on random direction angle.
@@ -30,8 +30,7 @@ function [VBar, UBar, phiBar, psiBar, rBar, EHat, singVals, singValsHat, rSteps,
     
     
     if ~exist('noiselvl', 'var')
-        
-        [singValsHat,noiselvl] = optimal_shrinkage(singVals, beta, 'op');
+        [singValsHat,noiselvl] = optimal_shrinkage(singVals, beta, 'op', percentile);
     else
         if noiselvl == 'ks'
             noiselvl = ksOpt(singVals, beta) ;

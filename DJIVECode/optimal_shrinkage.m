@@ -1,4 +1,4 @@
-function [singvals,noiselvl] = optimal_shrinkage(singvals,beta,loss,sigma)
+function [singvals,noiselvl] = optimal_shrinkage(singvals,beta,loss,percentile, sigma)
 
 % function singvals = optimal_shrinkage(singvals,beta,sigma_known)
 %
@@ -59,10 +59,11 @@ assert(numel(singvals)==length(singvals))
 assert(ismember(loss,{'fro','op','nuc'}))
 
 % estimate sigma if needed
-if nargin<4
+if nargin<5
     warning('off','MATLAB:quadl:MinStepSize')
     MPmedian = MedianMarcenkoPastur(beta);
-    sigma = median(singvals) / sqrt(MPmedian);
+    %this is where we manipulate numerator for noise variance
+    sigma = quantile(singvals, percentile) / sqrt(MPmedian);
     fprintf('estimated noise = %0.2f \n',sigma);
 end
 
